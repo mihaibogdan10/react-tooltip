@@ -12,7 +12,6 @@
     "parser": "babel-eslint",
     "ignore": [
       "dist/",
-      "standalone/",
       "src/style.js",
       "src/style.css",
       "example/"

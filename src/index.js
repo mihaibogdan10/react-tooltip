@@ -393,5 +393,4 @@ class ReactTooltip extends Component {
   }
 }
 
-/* export default not fit for standalone, it will exports {default:...} */
 module.exports = ReactTooltip
