@@ -10,7 +10,6 @@ import staticMethods from './decorators/staticMethods'
 import windowListener from './decorators/windowListener'
 import customEvent from './decorators/customEvent'
 import isCapture from './decorators/isCapture'
-import trackRemoval from './decorators/trackRemoval'
 
 /* Utils */
 import getPosition from './utils/getPosition'
@@ -24,7 +23,6 @@ import cssStyle from './style'
 @windowListener
 @customEvent
 @isCapture
-@trackRemoval
 class ReactTooltip extends Component {
 
   static propTypes = {
@@ -176,9 +174,6 @@ class ReactTooltip extends Component {
       window.removeEventListener(globalEventOff, this.hideTooltip)
       window.addEventListener(globalEventOff, this.hideTooltip, false)
     }
-
-    // Track removal of targetArray elements from DOM
-    this.bindRemovalTracker()
   }
 
   /**
@@ -193,7 +188,6 @@ class ReactTooltip extends Component {
     })
 
     if (globalEventOff) window.removeEventListener(globalEventOff, this.hideTooltip)
-    this.unbindRemovalTracker()
   }
 
   /**
