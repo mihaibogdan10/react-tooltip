@@ -33,7 +33,6 @@ class ReactTooltip extends Component {
     place: PropTypes.string,
     type: PropTypes.string,
     offset: PropTypes.object,
-    multiline: PropTypes.bool,
     border: PropTypes.bool,
     insecure: PropTypes.bool,
     class: PropTypes.string,
@@ -227,9 +226,8 @@ class ReactTooltip extends Component {
     }
     // Get the tooltip content
     // calculate in this phrase so that tip width height can be detected
-    const {children, multiline, getContent} = this.props
+    const {children, getContent} = this.props
     const originTooltip = e.currentTarget.getAttribute('data-tip')
-    const isMultiline = e.currentTarget.getAttribute('data-multiline') || multiline || false
 
     // Generate tootlip content
     let content
@@ -240,7 +238,7 @@ class ReactTooltip extends Component {
         content = getContent()
       }
     }
-    const placeholder = getTipContent(originTooltip, children, content, isMultiline)
+    const placeholder = getTipContent(originTooltip, children, content)
     const isEmptyTip = typeof placeholder === 'string' && placeholder === '' || placeholder === null
 
     // if it needs to skip adding hide listener to scroll
@@ -277,7 +275,7 @@ class ReactTooltip extends Component {
         this.intervalUpdateContent = setInterval(() => {
           if (this.mount) {
             const {getContent} = this.props
-            const placeholder = getTipContent(originTooltip, getContent[0](), isMultiline)
+            const placeholder = getTipContent(originTooltip, getContent[0]())
             const isEmptyTip = typeof placeholder === 'string' && placeholder === ''
             this.setState({
               placeholder,

@@ -39,7 +39,7 @@ const Test = React.createClass({
         <section className='tooltip-example'>
           <h4 className='title'>React Tooltip</h4>
           <div className='demonstration'>
-            <a data-for='main' data-tip="Hello<br />multiline<br />tooltip" data-iscapture="true">
+            <a data-for='main' data-tip data-iscapture="true">
                ◕‿‿◕
             </a>
           </div>
@@ -71,7 +71,9 @@ const Test = React.createClass({
               </div>
             </pre>
           </div>
-          <ReactTooltip id='main' place={place} type={type} multiline={true}/>
+          <ReactTooltip id='main' place={place} type={type}>
+            <div style={{width: '50px'}}>Hello multiline tooltip</div>
+          </ReactTooltip>
         </section>
         <section className="advance">
           <div className="section">
