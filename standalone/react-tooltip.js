@@ -1638,7 +1638,6 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
       placeholder: '',
       offset: {},
       extraClass: '',
-      html: false,
       delayHide: 0,
       delayShow: 0,
       event: props.event || null,
@@ -1860,7 +1859,6 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
         place: e.currentTarget.getAttribute('data-place') || this.props.place || 'top',
         type: e.currentTarget.getAttribute('data-type') || this.props.type || 'dark',
         offset: e.currentTarget.getAttribute('data-offset') || this.props.offset || {},
-        html: e.currentTarget.getAttribute('data-html') ? e.currentTarget.getAttribute('data-html') === 'true' : this.props.html || false,
         delayShow: e.currentTarget.getAttribute('data-delay-show') || this.props.delayShow || 0,
         delayHide: e.currentTarget.getAttribute('data-delay-hide') || this.props.delayHide || 0,
         border: e.currentTarget.getAttribute('data-border') ? e.currentTarget.getAttribute('data-border') === 'true' : this.props.border || false,
@@ -2041,7 +2039,6 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
       var _state3 = this.state,
           placeholder = _state3.placeholder,
           extraClass = _state3.extraClass,
-          html = _state3.html,
           ariaProps = _state3.ariaProps;
 
       var tooltipClass = (0, _classnames2.default)('__react_component_tooltip', { 'show': this.state.show }, { 'border': this.state.border }, { 'place-top': this.state.place === 'top' }, { 'place-bottom': this.state.place === 'bottom' }, { 'place-left': this.state.place === 'left' }, { 'place-right': this.state.place === 'right' }, { 'type-dark': this.state.type === 'dark' }, { 'type-success': this.state.type === 'success' }, { 'type-warning': this.state.type === 'warning' }, { 'type-error': this.state.type === 'error' }, { 'type-info': this.state.type === 'info' }, { 'type-light': this.state.type === 'light' });
@@ -2051,20 +2048,13 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
         Wrapper = ReactTooltip.defaultProps.wrapper;
       }
 
-      if (html) {
-        return _react2.default.createElement(Wrapper, _extends({ className: tooltipClass + ' ' + extraClass
+      return _react2.default.createElement(
+        Wrapper,
+        _extends({ className: tooltipClass + ' ' + extraClass
         }, ariaProps, {
-          'data-id': 'tooltip',
-          dangerouslySetInnerHTML: { __html: placeholder } }));
-      } else {
-        return _react2.default.createElement(
-          Wrapper,
-          _extends({ className: tooltipClass + ' ' + extraClass
-          }, ariaProps, {
-            'data-id': 'tooltip' }),
-          placeholder
-        );
-      }
+          'data-id': 'tooltip' }),
+        placeholder
+      );
     }
   }]);
 
@@ -2079,7 +2069,6 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
   class: _propTypes2.default.string,
   className: _propTypes2.default.string,
   id: _propTypes2.default.string,
-  html: _propTypes2.default.bool,
   delayHide: _propTypes2.default.number,
   delayShow: _propTypes2.default.number,
   event: _propTypes2.default.string,

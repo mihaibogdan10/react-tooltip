@@ -38,7 +38,6 @@ class ReactTooltip extends Component {
     class: PropTypes.string,
     className: PropTypes.string,
     id: PropTypes.string,
-    html: PropTypes.bool,
     delayHide: PropTypes.number,
     delayShow: PropTypes.number,
     event: PropTypes.string,
@@ -71,7 +70,6 @@ class ReactTooltip extends Component {
       placeholder: '',
       offset: {},
       extraClass: '',
-      html: false,
       delayHide: 0,
       delayShow: 0,
       event: props.event || null,
@@ -255,9 +253,6 @@ class ReactTooltip extends Component {
       place: e.currentTarget.getAttribute('data-place') || this.props.place || 'top',
       type: e.currentTarget.getAttribute('data-type') || this.props.type || 'dark',
       offset: e.currentTarget.getAttribute('data-offset') || this.props.offset || {},
-      html: e.currentTarget.getAttribute('data-html')
-        ? e.currentTarget.getAttribute('data-html') === 'true'
-        : (this.props.html || false),
       delayShow: e.currentTarget.getAttribute('data-delay-show') || this.props.delayShow || 0,
       delayHide: e.currentTarget.getAttribute('data-delay-hide') || this.props.delayHide || 0,
       border: e.currentTarget.getAttribute('data-border')
@@ -399,7 +394,7 @@ class ReactTooltip extends Component {
   }
 
   render () {
-    const {placeholder, extraClass, html, ariaProps} = this.state
+    const {placeholder, extraClass, ariaProps} = this.state
     let tooltipClass = classname(
       '__react_component_tooltip',
       {'show': this.state.show},
@@ -421,20 +416,11 @@ class ReactTooltip extends Component {
       Wrapper = ReactTooltip.defaultProps.wrapper
     }
 
-    if (html) {
-      return (
-        <Wrapper className={`${tooltipClass} ${extraClass}`}
-                 {...ariaProps}
-                 data-id='tooltip'
-                 dangerouslySetInnerHTML={{__html: placeholder}}/>
-      )
-    } else {
-      return (
-        <Wrapper className={`${tooltipClass} ${extraClass}`}
-                 {...ariaProps}
-                 data-id='tooltip'>{placeholder}</Wrapper>
-      )
-    }
+    return (
+      <Wrapper className={`${tooltipClass} ${extraClass}`}
+               {...ariaProps}
+               data-id='tooltip'>{placeholder}</Wrapper>
+    )
   }
 }
 
