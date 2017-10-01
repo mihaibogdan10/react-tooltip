@@ -1646,8 +1646,7 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
       currentEvent: null, // Current mouse event
       currentTarget: null, // Current target of mouse event
       ariaProps: (0, _aria.parseAria)(props), // aria- and role attributes
-      isEmptyTip: false,
-      disable: false
+      isEmptyTip: false
     };
 
     _this.bind(['showTooltip', 'updateTooltip', 'hideTooltip', 'globalRebuild', 'globalShow', 'globalHide', 'onWindowResize']);
@@ -1870,8 +1869,7 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
         delayShow: e.currentTarget.getAttribute('data-delay-show') || this.props.delayShow || 0,
         delayHide: e.currentTarget.getAttribute('data-delay-hide') || this.props.delayHide || 0,
         border: e.currentTarget.getAttribute('data-border') ? e.currentTarget.getAttribute('data-border') === 'true' : this.props.border || false,
-        extraClass: e.currentTarget.getAttribute('data-class') || this.props.class || this.props.className || '',
-        disable: e.currentTarget.getAttribute('data-tip-disable') ? e.currentTarget.getAttribute('data-tip-disable') === 'true' : this.props.disable || false
+        extraClass: e.currentTarget.getAttribute('data-class') || this.props.class || this.props.className || ''
       }, function () {
         if (scrollHide) _this5.addScrollListener(e);
         _this5.updateTooltip(e);
@@ -1905,15 +1903,14 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
       var _state = this.state,
           delayShow = _state.delayShow,
           show = _state.show,
-          isEmptyTip = _state.isEmptyTip,
-          disable = _state.disable;
+          isEmptyTip = _state.isEmptyTip;
       var afterShow = this.props.afterShow;
       var placeholder = this.state.placeholder;
 
       var delayTime = show ? 0 : parseInt(delayShow, 10);
       var eventTarget = e.currentTarget;
 
-      if (isEmptyTip || disable) return; // if the tooltip is empty, disable the tooltip
+      if (isEmptyTip) return; // if the tooltip is empty, disable the tooltip
       var updateState = function updateState() {
         if (Array.isArray(placeholder) && placeholder.length > 0 || placeholder) {
           var isInvisible = !_this6.state.show;
@@ -1947,12 +1944,11 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
 
       var _state2 = this.state,
           delayHide = _state2.delayHide,
-          isEmptyTip = _state2.isEmptyTip,
-          disable = _state2.disable;
+          isEmptyTip = _state2.isEmptyTip;
       var afterHide = this.props.afterHide;
 
       if (!this.mount) return;
-      if (isEmptyTip || disable) return; // if the tooltip is empty, disable the tooltip
+      if (isEmptyTip) return; // if the tooltip is empty, disable the tooltip
       if (hasTarget) {
         // Don't trigger other elements belongs to other ReactTooltip
         var targetArray = this.getTargetArray(this.props.id);
@@ -2058,10 +2054,9 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
           extraClass = _state4.extraClass,
           html = _state4.html,
           ariaProps = _state4.ariaProps,
-          disable = _state4.disable,
           isEmptyTip = _state4.isEmptyTip;
 
-      var tooltipClass = (0, _classnames2.default)('__react_component_tooltip', { 'show': this.state.show && !disable && !isEmptyTip }, { 'border': this.state.border }, { 'place-top': this.state.place === 'top' }, { 'place-bottom': this.state.place === 'bottom' }, { 'place-left': this.state.place === 'left' }, { 'place-right': this.state.place === 'right' }, { 'type-dark': this.state.type === 'dark' }, { 'type-success': this.state.type === 'success' }, { 'type-warning': this.state.type === 'warning' }, { 'type-error': this.state.type === 'error' }, { 'type-info': this.state.type === 'info' }, { 'type-light': this.state.type === 'light' });
+      var tooltipClass = (0, _classnames2.default)('__react_component_tooltip', { 'show': this.state.show && !isEmptyTip }, { 'border': this.state.border }, { 'place-top': this.state.place === 'top' }, { 'place-bottom': this.state.place === 'bottom' }, { 'place-left': this.state.place === 'left' }, { 'place-right': this.state.place === 'right' }, { 'type-dark': this.state.type === 'dark' }, { 'type-success': this.state.type === 'success' }, { 'type-warning': this.state.type === 'warning' }, { 'type-error': this.state.type === 'error' }, { 'type-info': this.state.type === 'info' }, { 'type-light': this.state.type === 'light' });
 
       var Wrapper = this.props.wrapper;
       if (ReactTooltip.supportedWrappers.indexOf(Wrapper) < 0) {
@@ -2102,13 +2097,11 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
   delayShow: _propTypes2.default.number,
   event: _propTypes2.default.string,
   eventOff: _propTypes2.default.string,
-  watchWindow: _propTypes2.default.bool,
   isCapture: _propTypes2.default.bool,
   globalEventOff: _propTypes2.default.string,
   getContent: _propTypes2.default.any,
   afterShow: _propTypes2.default.func,
   afterHide: _propTypes2.default.func,
-  disable: _propTypes2.default.bool,
   scrollHide: _propTypes2.default.bool,
   resizeHide: _propTypes2.default.bool,
   wrapper: _propTypes2.default.string

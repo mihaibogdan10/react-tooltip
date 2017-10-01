@@ -44,13 +44,11 @@ class ReactTooltip extends Component {
     delayShow: PropTypes.number,
     event: PropTypes.string,
     eventOff: PropTypes.string,
-    watchWindow: PropTypes.bool,
     isCapture: PropTypes.bool,
     globalEventOff: PropTypes.string,
     getContent: PropTypes.any,
     afterShow: PropTypes.func,
     afterHide: PropTypes.func,
-    disable: PropTypes.bool,
     scrollHide: PropTypes.bool,
     resizeHide: PropTypes.bool,
     wrapper: PropTypes.string
@@ -82,8 +80,7 @@ class ReactTooltip extends Component {
       currentEvent: null, // Current mouse event
       currentTarget: null, // Current target of mouse event
       ariaProps: parseAria(props), // aria- and role attributes
-      isEmptyTip: false,
-      disable: false
+      isEmptyTip: false
     }
 
     this.bind([
@@ -271,10 +268,7 @@ class ReactTooltip extends Component {
       border: e.currentTarget.getAttribute('data-border')
         ? e.currentTarget.getAttribute('data-border') === 'true'
         : (this.props.border || false),
-      extraClass: e.currentTarget.getAttribute('data-class') || this.props.class || this.props.className || '',
-      disable: e.currentTarget.getAttribute('data-tip-disable')
-        ? e.currentTarget.getAttribute('data-tip-disable') === 'true'
-        : (this.props.disable || false)
+      extraClass: e.currentTarget.getAttribute('data-class') || this.props.class || this.props.className || ''
     }, () => {
       if (scrollHide) this.addScrollListener(e)
       this.updateTooltip(e)
@@ -299,13 +293,13 @@ class ReactTooltip extends Component {
    * When mouse hover, updatetooltip
    */
   updateTooltip (e) {
-    const {delayShow, show, isEmptyTip, disable} = this.state
+    const {delayShow, show, isEmptyTip} = this.state
     const {afterShow} = this.props
     let {placeholder} = this.state
     const delayTime = show ? 0 : parseInt(delayShow, 10)
     const eventTarget = e.currentTarget
 
-    if (isEmptyTip || disable) return // if the tooltip is empty, disable the tooltip
+    if (isEmptyTip) return // if the tooltip is empty, disable the tooltip
     const updateState = () => {
       if (Array.isArray(placeholder) && placeholder.length > 0 || placeholder) {
         const isInvisible = !this.state.show
@@ -332,10 +326,10 @@ class ReactTooltip extends Component {
    * When mouse leave, hide tooltip
    */
   hideTooltip (e, hasTarget) {
-    const {delayHide, isEmptyTip, disable} = this.state
+    const {delayHide, isEmptyTip} = this.state
     const {afterHide} = this.props
     if (!this.mount) return
-    if (isEmptyTip || disable) return // if the tooltip is empty, disable the tooltip
+    if (isEmptyTip) return // if the tooltip is empty, disable the tooltip
     if (hasTarget) {
       // Don't trigger other elements belongs to other ReactTooltip
       const targetArray = this.getTargetArray(this.props.id)
@@ -413,10 +407,10 @@ class ReactTooltip extends Component {
   }
 
   render () {
-    const {placeholder, extraClass, html, ariaProps, disable, isEmptyTip} = this.state
+    const {placeholder, extraClass, html, ariaProps, isEmptyTip} = this.state
     let tooltipClass = classname(
       '__react_component_tooltip',
-      {'show': this.state.show && !disable && !isEmptyTip},
+      {'show': this.state.show && !isEmptyTip},
       {'border': this.state.border},
       {'place-top': this.state.place === 'top'},
       {'place-bottom': this.state.place === 'bottom'},
