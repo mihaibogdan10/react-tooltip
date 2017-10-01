@@ -16,7 +16,6 @@ import getPosition from './utils/getPosition'
 import { parseAria } from './utils/aria'
 import nodeListToArray from './utils/nodeListToArray'
 
-
 @staticMethods
 @windowListener
 @customEvent
