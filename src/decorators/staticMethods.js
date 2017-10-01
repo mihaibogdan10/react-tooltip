@@ -62,7 +62,7 @@ export default function (target) {
 
   target.prototype.globalHide = function (event) {
     if (this.mount) {
-      const hasTarget = event && event.detail && event.detail.target && true || false
+      const hasTarget = !!(event && event.detail && event.detail.target)
       this.hideTooltip({ currentTarget: hasTarget && event.detail.target }, hasTarget)
     }
   }
