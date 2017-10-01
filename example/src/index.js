@@ -10,7 +10,6 @@ const Test = React.createClass({
     return {
       place: 'top',
       type: 'dark',
-      effect: 'float',
       condition: false
     }
   },
@@ -27,12 +26,6 @@ const Test = React.createClass({
     })
   },
 
-  changeEffect (effect) {
-    this.setState({
-      effect: effect
-    })
-  },
-
   _onClick () {
     this.setState({
       condition: true
@@ -40,7 +33,7 @@ const Test = React.createClass({
   },
 
   render () {
-    let { place, type, effect } = this.state
+    let { place, type } = this.state
     return (
       <div>
         <section className='tooltip-example'>
@@ -68,22 +61,17 @@ const Test = React.createClass({
                 <a className={type === 'info' ? 'active' : ''} onClick={this.changeType.bind(this, 'info')}>Info</a>
                 <a className={type === 'light' ? 'active' : ''} onClick={this.changeType.bind(this, 'light')}>Light</a>
               </div>
-              <div className='item'>
-                <p>Effect</p>
-                <a className={effect === 'float' ? 'active' : ''} onClick={this.changeEffect.bind(this, 'float')}>Float<span className='mark'>(default)</span></a>
-                <a className={effect === 'solid' ? 'active' : ''} onClick={this.changeEffect.bind(this, 'solid')}>Solid</a>
-              </div>
             </div>
             <pre>
               <div>
                 <p className='label'>Code</p>
                 <hr></hr>
                 <p>{'<a data-tip="React-tooltip"> ◕‿‿◕ </a>'}</p>
-                <p>{'<ReactTooltip place="' + place + '" type="' + type + '" effect="' + effect + '"/>'}</p>
+                <p>{'<ReactTooltip place="' + place + '" type="' + type + '"/>'}</p>
               </div>
             </pre>
           </div>
-          <ReactTooltip id='main' place={place} type={type} effect={effect} multiline={true}/>
+          <ReactTooltip id='main' place={place} type={type} multiline={true}/>
         </section>
         <section className="advance">
           <div className="section">
@@ -97,7 +85,7 @@ const Test = React.createClass({
               </div>
               <div className="side">
                 <a data-tip data-for='sadFace'> இдஇ </a>
-                <ReactTooltip id='sadFace' type="warning" effect="solid"><span>Show sad face</span></ReactTooltip>
+                <ReactTooltip id='sadFace' type="warning"><span>Show sad face</span></ReactTooltip>
               </div>
             </div>
             <br />
@@ -108,7 +96,7 @@ const Test = React.createClass({
                   " " + " " + "<span>Show happy face</span>\n" +
                 "</ReactTooltip>\n" +
                 "<a data-tip data-for='sadFace'> இдஇ </a>\n" +
-                "<ReactTooltip id='sadFace' type='warning' effect='solid'>\n" +
+                "<ReactTooltip id='sadFace' type='warning' >\n" +
                   " " + " " + "<span>Show sad face</span>\n" +
                 "</ReactTooltip>"}</p>
               </div>
@@ -182,7 +170,7 @@ const Test = React.createClass({
               <div className="side">
                 <a data-for='custom-class' data-tip='hover on me will keep the tootlip'>(･ω´･ )</a>
                 {/* <a data-for='custom-class' data-tip='' data-tip-disable='true'>empty testing</a> */}
-                <ReactTooltip id='custom-class' className='extraClass' delayHide={1000} effect='solid'/>
+                <ReactTooltip id='custom-class' className='extraClass' delayHide={1000} />
               </div>
               <div className="side">
                 <a data-for='custom-theme' data-tip='custom theme'>(･ω´･ )</a>
@@ -193,7 +181,7 @@ const Test = React.createClass({
             <pre className='example-pre'>
               <div>
                 <p>{"<a data-tip='hover on me will keep the tootlip'>(･ω´･ )́)</a>\n" +
-                "<ReactTooltip className='extraClass' delayHide={1000} effect='solid'/>\n" +
+                "<ReactTooltip className='extraClass' delayHide={1000} />\n" +
                 ".extraClass {\n" +
                   " font-size: 20px !important;\n" +
                   " pointer-events: auto !important;\n" +
