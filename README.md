@@ -26,7 +26,6 @@ className	|   data-class  |  String  |   | extra custom class, can use !importan
  delayShow	|   data-delay-show  |  Number  |   | `<p data-tip="tooltip" data-delay-show='1000'></p>` or `<ReactTooltip delayShow={1000} />`
  insecure | null | Bool | true, false | Whether to inject the style header into the page dynamically (violates CSP style-src but is a convenient default)
  border  |   data-border  |  Bool  |  true, false | Add one pixel white border
- getContent | null | Func or Array | () => {}, [() => {}, Interval] | Generate the tip content dynamically
  afterShow | null | Func | () => {} | Function that will be called after tooltip show
  afterHide | null | Func | () => {} | Function that will be called after tooltip hide
  scrollHide | data-scroll-hide | Bool | true, false | Hide the tooltip when scrolling, default is true
