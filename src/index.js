@@ -16,8 +16,6 @@ import getPosition from './utils/getPosition'
 import { parseAria } from './utils/aria'
 import nodeListToArray from './utils/nodeListToArray'
 
-/* CSS */
-import cssStyle from './style'
 
 @staticMethods
 @windowListener
@@ -31,7 +29,6 @@ class ReactTooltip extends Component {
     type: PropTypes.string,
     offset: PropTypes.object,
     border: PropTypes.bool,
-    insecure: PropTypes.bool,
     class: PropTypes.string,
     className: PropTypes.string,
     id: PropTypes.string,
@@ -44,17 +41,12 @@ class ReactTooltip extends Component {
     afterShow: PropTypes.func,
     afterHide: PropTypes.func,
     scrollHide: PropTypes.bool,
-    resizeHide: PropTypes.bool,
-    wrapper: PropTypes.string
+    resizeHide: PropTypes.bool
   };
 
   static defaultProps = {
-    insecure: true,
-    resizeHide: true,
-    wrapper: 'div'
+    resizeHide: true
   };
-
-  static supportedWrappers = ['div', 'span'];
 
   constructor (props) {
     super(props)
@@ -100,10 +92,7 @@ class ReactTooltip extends Component {
   }
 
   componentDidMount () {
-    const { insecure, resizeHide } = this.props
-    if (insecure) {
-      this.setStyleHeader() // Set the style to the <link>
-    }
+    const { resizeHide } = this.props
     this.bindListener() // Bind listener for tooltip
     this.bindWindowEvents(resizeHide) // Bind global event for static method
   }
@@ -334,19 +323,6 @@ class ReactTooltip extends Component {
   }
 
   /**
-   * Set style tag in header
-   * in this way we can insert default css
-   */
-  setStyleHeader () {
-    if (!document.getElementsByTagName('head')[0].querySelector('style[id="react-tooltip"]')) {
-      let tag = document.createElement('style')
-      tag.id = 'react-tooltip'
-      tag.innerHTML = cssStyle
-      document.getElementsByTagName('head')[0].appendChild(tag)
-    }
-  }
-
-  /**
    * CLear all kinds of timeout of interval
    */
   clearTimer () {
@@ -374,15 +350,10 @@ class ReactTooltip extends Component {
       {'type-light': this.state.type === 'light'}
     )
 
-    let Wrapper = this.props.wrapper
-    if (ReactTooltip.supportedWrappers.indexOf(Wrapper) < 0) {
-      Wrapper = ReactTooltip.defaultProps.wrapper
-    }
-
     return (
-      <Wrapper className={`${tooltipClass} ${extraClass}`}
+      <div className={`${tooltipClass} ${extraClass}`}
                {...ariaProps}
-               data-id='tooltip'>{children}</Wrapper>
+               data-id='tooltip'>{children}</div>
     )
   }
 }
