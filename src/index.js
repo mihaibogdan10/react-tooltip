@@ -10,7 +10,6 @@ import staticMethods from './decorators/staticMethods'
 import windowListener from './decorators/windowListener'
 import customEvent from './decorators/customEvent'
 import isCapture from './decorators/isCapture'
-import getEffect from './decorators/getEffect'
 import trackRemoval from './decorators/trackRemoval'
 
 /* Utils */
@@ -26,7 +25,6 @@ import cssStyle from './style'
 @windowListener
 @customEvent
 @isCapture
-@getEffect
 @trackRemoval
 class ReactTooltip extends Component {
 
@@ -34,7 +32,6 @@ class ReactTooltip extends Component {
     children: PropTypes.any,
     place: PropTypes.string,
     type: PropTypes.string,
-    effect: PropTypes.string,
     offset: PropTypes.object,
     multiline: PropTypes.bool,
     border: PropTypes.bool,
@@ -72,7 +69,6 @@ class ReactTooltip extends Component {
     this.state = {
       place: 'top', // Direction of tooltip
       type: 'dark', // Color theme of tooltip
-      effect: 'float', // float or fixed
       show: false,
       border: false,
       placeholder: '',
@@ -171,7 +167,6 @@ class ReactTooltip extends Component {
 
     targetArray.forEach(target => {
       const isCaptureMode = this.isCapture(target)
-      const effect = this.getEffect(target)
       if (target.getAttribute('currentItem') === null) {
         target.setAttribute('currentItem', 'false')
       }
@@ -183,9 +178,6 @@ class ReactTooltip extends Component {
       }
 
       target.addEventListener('mouseenter', this.showTooltip, isCaptureMode)
-      if (effect === 'float') {
-        target.addEventListener('mousemove', this.updateTooltip, isCaptureMode)
-      }
       target.addEventListener('mouseleave', this.hideTooltip, isCaptureMode)
     })
 
@@ -254,9 +246,6 @@ class ReactTooltip extends Component {
     const placeholder = getTipContent(originTooltip, children, content, isMultiline)
     const isEmptyTip = typeof placeholder === 'string' && placeholder === '' || placeholder === null
 
-    // If it is focus event or called by ReactTooltip.show, switch to `solid` effect
-    const switchToSolid = e instanceof window.FocusEvent || isGlobalCall
-
     // if it needs to skip adding hide listener to scroll
     let scrollHide = true
     if (e.currentTarget.getAttribute('data-scroll-hide')) {
@@ -273,7 +262,6 @@ class ReactTooltip extends Component {
       isEmptyTip,
       place: e.currentTarget.getAttribute('data-place') || this.props.place || 'top',
       type: e.currentTarget.getAttribute('data-type') || this.props.type || 'dark',
-      effect: switchToSolid && 'solid' || this.getEffect(e.currentTarget),
       offset: e.currentTarget.getAttribute('data-offset') || this.props.offset || {},
       html: e.currentTarget.getAttribute('data-html')
         ? e.currentTarget.getAttribute('data-html') === 'true'
@@ -387,9 +375,9 @@ class ReactTooltip extends Component {
 
   // Calculation the position
   updatePosition () {
-    const {currentEvent, currentTarget, place, effect, offset} = this.state
+    const {currentEvent, currentTarget, place, offset} = this.state
     const node = ReactDOM.findDOMNode(this)
-    const result = getPosition(currentEvent, currentTarget, node, place, effect, offset)
+    const result = getPosition(currentEvent, currentTarget, node, place, offset)
 
     if (result.isNewState) {
       // Switch to reverse placement

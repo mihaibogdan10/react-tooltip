@@ -6,7 +6,6 @@
  * - `target` {Element} the currentTarget of the event
  * - `node` {DOM} the react-tooltip object
  * - `place` {String} top / right / bottom / left
- * - `effect` {String} float / solid
  * - `offset` {Object} the offset to default position
  *
  * @return {Object
@@ -14,11 +13,11 @@
  * - `newState` {Object}
  * - `position` {OBject} {left: {Number}, top: {Number}}
  */
-export default function (e, target, node, place, effect, offset) {
+export default function (e, target, node, place, offset) {
   const tipWidth = node.clientWidth
   const tipHeight = node.clientHeight
-  const {mouseX, mouseY} = getCurrentOffset(e, target, effect)
-  const defaultOffset = getDefaultPosition(effect, target.clientWidth, target.clientHeight, tipWidth, tipHeight)
+  const {mouseX, mouseY} = getCurrentOffset(e, target)
+  const defaultOffset = getDefaultPosition(target.clientWidth, target.clientHeight, tipWidth, tipHeight)
   const {extraOffset_X, extraOffset_Y} = calculateOffset(offset)
 
   const windowWidth = window.innerWidth
@@ -162,19 +161,13 @@ export default function (e, target, node, place, effect, offset) {
 }
 
 // Get current mouse offset
-const getCurrentOffset = (e, currentTarget, effect) => {
+const getCurrentOffset = (e, currentTarget) => {
   const boundingClientRect = currentTarget.getBoundingClientRect()
   const targetTop = boundingClientRect.top
   const targetLeft = boundingClientRect.left
   const targetWidth = currentTarget.clientWidth
   const targetHeight = currentTarget.clientHeight
 
-  if (effect === 'float') {
-    return {
-      mouseX: e.clientX,
-      mouseY: e.clientY
-    }
-  }
   return {
     mouseX: targetLeft + (targetWidth / 2),
     mouseY: targetTop + (targetHeight / 2)
@@ -183,65 +176,36 @@ const getCurrentOffset = (e, currentTarget, effect) => {
 
 // List all possibility of tooltip final offset
 // This is useful in judging if it is necessary for tooltip to switch position when out of window
-const getDefaultPosition = (effect, targetWidth, targetHeight, tipWidth, tipHeight) => {
+const getDefaultPosition = (targetWidth, targetHeight, tipWidth, tipHeight) => {
   let top
   let right
   let bottom
   let left
-  const disToMouse = 3
   const triangleHeight = 2
-  const cursorHeight = 12 // Optimize for float bottom only, cause the cursor will hide the tooltip
 
-  if (effect === 'float') {
-    top = {
-      l: -(tipWidth / 2),
-      r: tipWidth / 2,
-      t: -(tipHeight + disToMouse + triangleHeight),
-      b: -disToMouse
-    }
-    bottom = {
-      l: -(tipWidth / 2),
-      r: tipWidth / 2,
-      t: disToMouse + cursorHeight,
-      b: tipHeight + disToMouse + triangleHeight + cursorHeight
-    }
-    left = {
-      l: -(tipWidth + disToMouse + triangleHeight),
-      r: -disToMouse,
-      t: -(tipHeight / 2),
-      b: tipHeight / 2
-    }
-    right = {
-      l: disToMouse,
-      r: tipWidth + disToMouse + triangleHeight,
-      t: -(tipHeight / 2),
-      b: tipHeight / 2
-    }
-  } else if (effect === 'solid') {
-    top = {
-      l: -(tipWidth / 2),
-      r: tipWidth / 2,
-      t: -(targetHeight / 2 + tipHeight + triangleHeight),
-      b: -(targetHeight / 2)
-    }
-    bottom = {
-      l: -(tipWidth / 2),
-      r: tipWidth / 2,
-      t: targetHeight / 2,
-      b: targetHeight / 2 + tipHeight + triangleHeight
-    }
-    left = {
-      l: -(tipWidth + targetWidth / 2 + triangleHeight),
-      r: -(targetWidth / 2),
-      t: -(tipHeight / 2),
-      b: tipHeight / 2
-    }
-    right = {
-      l: targetWidth / 2,
-      r: tipWidth + targetWidth / 2 + triangleHeight,
-      t: -(tipHeight / 2),
-      b: tipHeight / 2
-    }
+  top = {
+    l: -(tipWidth / 2),
+    r: tipWidth / 2,
+    t: -(targetHeight / 2 + tipHeight + triangleHeight),
+    b: -(targetHeight / 2)
+  }
+  bottom = {
+    l: -(tipWidth / 2),
+    r: tipWidth / 2,
+    t: targetHeight / 2,
+    b: targetHeight / 2 + tipHeight + triangleHeight
+  }
+  left = {
+    l: -(tipWidth + targetWidth / 2 + triangleHeight),
+    r: -(targetWidth / 2),
+    t: -(tipHeight / 2),
+    b: tipHeight / 2
+  }
+  right = {
+    l: targetWidth / 2,
+    r: tipWidth + targetWidth / 2 + triangleHeight,
+    t: -(tipHeight / 2),
+    b: tipHeight / 2
   }
 
   return {top, bottom, left, right}
