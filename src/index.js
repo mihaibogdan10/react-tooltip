@@ -14,7 +14,6 @@ import trackRemoval from './decorators/trackRemoval'
 
 /* Utils */
 import getPosition from './utils/getPosition'
-import getTipContent from './utils/getTipContent'
 import { parseAria } from './utils/aria'
 import nodeListToArray from './utils/nodeListToArray'
 
@@ -44,7 +43,6 @@ class ReactTooltip extends Component {
     eventOff: PropTypes.string,
     isCapture: PropTypes.bool,
     globalEventOff: PropTypes.string,
-    getContent: PropTypes.any,
     afterShow: PropTypes.func,
     afterHide: PropTypes.func,
     scrollHide: PropTypes.bool,
@@ -67,7 +65,6 @@ class ReactTooltip extends Component {
       type: 'dark', // Color theme of tooltip
       show: false,
       border: false,
-      placeholder: '',
       offset: {},
       extraClass: '',
       delayHide: 0,
@@ -221,21 +218,6 @@ class ReactTooltip extends Component {
       const isMyElement = targetArray.some(ele => ele === e.currentTarget)
       if (!isMyElement || this.state.show) return
     }
-    // Get the tooltip content
-    // calculate in this phrase so that tip width height can be detected
-    const {children, getContent} = this.props
-    const originTooltip = e.currentTarget.getAttribute('data-tip')
-
-    // Generate tootlip content
-    let content
-    if (getContent) {
-      if (Array.isArray(getContent)) {
-        content = getContent[0] && getContent[0]()
-      } else {
-        content = getContent()
-      }
-    }
-    const placeholder = getTipContent(originTooltip, children, content)
 
     // if it needs to skip adding hide listener to scroll
     let scrollHide = true
@@ -249,7 +231,6 @@ class ReactTooltip extends Component {
     this.clearTimer()
 
     this.setState({
-      placeholder,
       place: e.currentTarget.getAttribute('data-place') || this.props.place || 'top',
       type: e.currentTarget.getAttribute('data-type') || this.props.type || 'dark',
       offset: e.currentTarget.getAttribute('data-offset') || this.props.offset || {},
@@ -262,18 +243,6 @@ class ReactTooltip extends Component {
     }, () => {
       if (scrollHide) this.addScrollListener(e)
       this.updateTooltip(e)
-
-      if (getContent && Array.isArray(getContent)) {
-        this.intervalUpdateContent = setInterval(() => {
-          if (this.mount) {
-            const {getContent} = this.props
-            const placeholder = getTipContent(originTooltip, getContent[0]())
-            this.setState({
-              placeholder
-            })
-          }
-        }, getContent[1])
-      }
     })
   }
 
@@ -282,13 +251,12 @@ class ReactTooltip extends Component {
    */
   updateTooltip (e) {
     const {delayShow, show} = this.state
-    const {afterShow} = this.props
-    let {placeholder} = this.state
+    const {afterShow, children} = this.props
     const delayTime = show ? 0 : parseInt(delayShow, 10)
     const eventTarget = e.currentTarget
 
     const updateState = () => {
-      if (Array.isArray(placeholder) && placeholder.length > 0 || placeholder) {
+      if (Array.isArray(children) && children.length > 0 || children) {
         const isInvisible = !this.state.show
         this.setState({
           currentEvent: e,
@@ -394,7 +362,8 @@ class ReactTooltip extends Component {
   }
 
   render () {
-    const {placeholder, extraClass, ariaProps} = this.state
+    const {extraClass, ariaProps} = this.state
+    const {children} = this.props
     let tooltipClass = classname(
       '__react_component_tooltip',
       {'show': this.state.show},
@@ -419,7 +388,7 @@ class ReactTooltip extends Component {
     return (
       <Wrapper className={`${tooltipClass} ${extraClass}`}
                {...ariaProps}
-               data-id='tooltip'>{placeholder}</Wrapper>
+               data-id='tooltip'>{children}</Wrapper>
     )
   }
 }
