@@ -78,7 +78,6 @@ class ReactTooltip extends Component {
     this.mount = true
     this.delayShowLoop = null
     this.delayHideLoop = null
-    this.intervalUpdateContent = null
   }
 
   /**
@@ -327,7 +326,6 @@ class ReactTooltip extends Component {
   clearTimer () {
     clearTimeout(this.delayShowLoop)
     clearTimeout(this.delayHideLoop)
-    clearInterval(this.intervalUpdateContent)
   }
 
   render () {
