@@ -1645,8 +1645,7 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
       eventOff: props.eventOff || null,
       currentEvent: null, // Current mouse event
       currentTarget: null, // Current target of mouse event
-      ariaProps: (0, _aria.parseAria)(props), // aria- and role attributes
-      isEmptyTip: false
+      ariaProps: (0, _aria.parseAria)(props) // aria- and role attributes
     };
 
     _this.bind(['showTooltip', 'updateTooltip', 'hideTooltip', 'globalRebuild', 'globalShow', 'globalHide', 'onWindowResize']);
@@ -1844,7 +1843,6 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
         }
       }
       var placeholder = (0, _getTipContent2.default)(originTooltip, children, content);
-      var isEmptyTip = typeof placeholder === 'string' && placeholder === '' || placeholder === null;
 
       // if it needs to skip adding hide listener to scroll
       var scrollHide = true;
@@ -1859,7 +1857,6 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
 
       this.setState({
         placeholder: placeholder,
-        isEmptyTip: isEmptyTip,
         place: e.currentTarget.getAttribute('data-place') || this.props.place || 'top',
         type: e.currentTarget.getAttribute('data-type') || this.props.type || 'dark',
         offset: e.currentTarget.getAttribute('data-offset') || this.props.offset || {},
@@ -1878,10 +1875,8 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
               var _getContent = _this5.props.getContent;
 
               var _placeholder = (0, _getTipContent2.default)(originTooltip, _getContent[0]());
-              var _isEmptyTip = typeof _placeholder === 'string' && _placeholder === '';
               _this5.setState({
-                placeholder: _placeholder,
-                isEmptyTip: _isEmptyTip
+                placeholder: _placeholder
               });
             }
           }, getContent[1]);
@@ -1900,15 +1895,13 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
 
       var _state = this.state,
           delayShow = _state.delayShow,
-          show = _state.show,
-          isEmptyTip = _state.isEmptyTip;
+          show = _state.show;
       var afterShow = this.props.afterShow;
       var placeholder = this.state.placeholder;
 
       var delayTime = show ? 0 : parseInt(delayShow, 10);
       var eventTarget = e.currentTarget;
 
-      if (isEmptyTip) return; // if the tooltip is empty, disable the tooltip
       var updateState = function updateState() {
         if (Array.isArray(placeholder) && placeholder.length > 0 || placeholder) {
           var isInvisible = !_this6.state.show;
@@ -1940,13 +1933,11 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
     value: function hideTooltip(e, hasTarget) {
       var _this7 = this;
 
-      var _state2 = this.state,
-          delayHide = _state2.delayHide,
-          isEmptyTip = _state2.isEmptyTip;
+      var delayHide = this.state.delayHide;
       var afterHide = this.props.afterHide;
 
       if (!this.mount) return;
-      if (isEmptyTip) return; // if the tooltip is empty, disable the tooltip
+
       if (hasTarget) {
         // Don't trigger other elements belongs to other ReactTooltip
         var targetArray = this.getTargetArray(this.props.id);
@@ -1997,11 +1988,11 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
     value: function updatePosition() {
       var _this8 = this;
 
-      var _state3 = this.state,
-          currentEvent = _state3.currentEvent,
-          currentTarget = _state3.currentTarget,
-          place = _state3.place,
-          offset = _state3.offset;
+      var _state2 = this.state,
+          currentEvent = _state2.currentEvent,
+          currentTarget = _state2.currentTarget,
+          place = _state2.place,
+          offset = _state2.offset;
 
       var node = _reactDom2.default.findDOMNode(this);
       var result = (0, _getPosition2.default)(currentEvent, currentTarget, node, place, offset);
@@ -2047,14 +2038,13 @@ var ReactTooltip = (0, _staticMethods2.default)(_class = (0, _windowListener2.de
   }, {
     key: 'render',
     value: function render() {
-      var _state4 = this.state,
-          placeholder = _state4.placeholder,
-          extraClass = _state4.extraClass,
-          html = _state4.html,
-          ariaProps = _state4.ariaProps,
-          isEmptyTip = _state4.isEmptyTip;
+      var _state3 = this.state,
+          placeholder = _state3.placeholder,
+          extraClass = _state3.extraClass,
+          html = _state3.html,
+          ariaProps = _state3.ariaProps;
 
-      var tooltipClass = (0, _classnames2.default)('__react_component_tooltip', { 'show': this.state.show && !isEmptyTip }, { 'border': this.state.border }, { 'place-top': this.state.place === 'top' }, { 'place-bottom': this.state.place === 'bottom' }, { 'place-left': this.state.place === 'left' }, { 'place-right': this.state.place === 'right' }, { 'type-dark': this.state.type === 'dark' }, { 'type-success': this.state.type === 'success' }, { 'type-warning': this.state.type === 'warning' }, { 'type-error': this.state.type === 'error' }, { 'type-info': this.state.type === 'info' }, { 'type-light': this.state.type === 'light' });
+      var tooltipClass = (0, _classnames2.default)('__react_component_tooltip', { 'show': this.state.show }, { 'border': this.state.border }, { 'place-top': this.state.place === 'top' }, { 'place-bottom': this.state.place === 'bottom' }, { 'place-left': this.state.place === 'left' }, { 'place-right': this.state.place === 'right' }, { 'type-dark': this.state.type === 'dark' }, { 'type-success': this.state.type === 'success' }, { 'type-warning': this.state.type === 'warning' }, { 'type-error': this.state.type === 'error' }, { 'type-info': this.state.type === 'info' }, { 'type-light': this.state.type === 'light' });
 
       var Wrapper = this.props.wrapper;
       if (ReactTooltip.supportedWrappers.indexOf(Wrapper) < 0) {
